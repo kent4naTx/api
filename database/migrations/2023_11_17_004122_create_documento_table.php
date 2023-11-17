@@ -13,7 +13,7 @@ return new class extends Migration
     {
         Schema::create('documento', function (Blueprint $table) {
             $table->id();
-            $table->enum('tipo', ['CNH', 'CPF', 'CNH', 'RG', 'CNPJ']);
+            $table->enum('tipo', ['CNH', 'CPF', 'RG', 'CNPJ']);
             $table->string('numero', 14)->unique();
             $table->timestamps();
         });

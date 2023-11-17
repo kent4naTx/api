@@ -14,7 +14,7 @@ return new class extends Migration
         Schema::create('rota_status', function (Blueprint $table) {
             $table->id();
             $table->foreignId('rota_id')->references('id')->on('rota')->onDelete('CASCADE');
-            $table->foreignId('status_id')->references('id')->on('status')->onDelete('CASCADE');    
+            $table->foreignId('status_rota_id')->references('id')->on('status_rota')->onDelete('CASCADE');    
             $table->timestamps();
         });
     }
