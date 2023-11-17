@@ -11,12 +11,9 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('cidade', function (Blueprint $table) {
+        Schema::create('status_rota', function (Blueprint $table) {
             $table->id();
-            $table->foreignId('estado_id')->references('id')->on('estado');
-            $table->decimal('latitude');
-            $table->decimal('longitude');
-            $table->string('nome', 80);
+            $table->enum('descricao', ['ATIVO', 'INATIVO', 'NEGADA']);
             $table->timestamps();
         });
     }
@@ -26,6 +23,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('cidade');
+        Schema::dropIfExists('status_rota');
     }
 };

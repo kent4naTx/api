@@ -11,12 +11,10 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('cidade', function (Blueprint $table) {
+        Schema::create('rota_status', function (Blueprint $table) {
             $table->id();
-            $table->foreignId('estado_id')->references('id')->on('estado');
-            $table->decimal('latitude');
-            $table->decimal('longitude');
-            $table->string('nome', 80);
+            $table->foreignId('rota_id')->references('id')->on('rota')->onDelete('CASCADE');
+            $table->foreignId('status_id')->references('id')->on('status')->onDelete('CASCADE');    
             $table->timestamps();
         });
     }
@@ -26,6 +24,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('cidade');
+        Schema::dropIfExists('rota_status');
     }
 };
