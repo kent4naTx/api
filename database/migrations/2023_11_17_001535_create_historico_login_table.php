@@ -11,12 +11,11 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('usuario', function (Blueprint $table) {
+        Schema::create('historico_login', function (Blueprint $table) {
             $table->id();
-            $table->string("nome", 80);
-            $table->string("email", 80)->unique();
-            $table->string("senha");
-            $table->timestamps();
+            $table->foreignId('usuario_id')->references('id')->on('usuario');
+            $table->datetime('entrada');
+            $table->datetime('saida');
         });
     }
 
@@ -25,6 +24,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('users');
+        Schema::dropIfExists('historico_login');
     }
 };
