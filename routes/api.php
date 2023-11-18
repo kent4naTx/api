@@ -1,7 +1,13 @@
 <?php
 
-use Illuminate\Http\Request;
+use App\Http\Controllers\Admin\AdminController;
+use App\Http\Controllers\Login\LoginController;
+use App\Http\Controllers\Loja\LojaController;
+use App\Http\Controllers\Usuario\UsuarioController;
+use App\Http\Controllers\Vendedor\VendedorController;
 use Illuminate\Support\Facades\Route;
+
+
 
 /*
 |--------------------------------------------------------------------------
@@ -14,6 +20,24 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
-Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
-    return $request->user();
-});
+
+/** USUARIO */
+Route::apiResource("usuario", UsuarioController::class);
+/** USUARIO */
+
+/** USUARIO */
+Route::apiResource("admin", AdminController::class);
+/** USUARIO */
+
+/** USUARIO */
+Route::apiResource("loja", LojaController::class);
+/** USUARIO */
+
+/** USUARIO */
+Route::apiResource("vendedor", VendedorController::class);
+/** USUARIO */
+
+/** LOGIN */
+Route::apiResource("login", LoginController::class);
+/** LOGIN */
+
