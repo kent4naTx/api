@@ -5,6 +5,7 @@ use App\Http\Controllers\Login\LoginController;
 use App\Http\Controllers\Loja\LojaController;
 use App\Http\Controllers\Usuario\UsuarioController;
 use App\Http\Controllers\Vendedor\VendedorController;
+use App\Http\Middleware\ValidateToken;
 use Illuminate\Support\Facades\Route;
 
 
@@ -19,6 +20,20 @@ use Illuminate\Support\Facades\Route;
 | be assigned to the "api" middleware group. Make something great!
 |
 */
+
+/** LOGIN */
+Route::post("entrar", [LoginController::class, "entrar"]);
+/** LOGIN */
+
+
+/** ROTAS PROTEGIDAS POR TOKEN */
+Route::middleware(ValidateToken::class)->group(function () {
+
+    /** LOGOUT */
+    Route::post("sair", [LoginController::class, "sair"]);
+    /** LOGOUT */
+});
+
 
 /** ADMIN */
 Route::apiResource("admin", AdminController::class);
@@ -35,8 +50,3 @@ Route::apiResource("loja", LojaController::class);
 /** VENDEDOR */
 Route::apiResource("vendedor", VendedorController::class);
 /** VENDEDOR */
-
-/** LOGIN */
-Route::post("entrar", [LoginController::class, "entrar"]);
-Route::post("sair", [LoginController::class, "sair"]);
-/** LOGIN */

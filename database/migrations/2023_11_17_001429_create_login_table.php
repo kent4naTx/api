@@ -16,7 +16,7 @@ return new class extends Migration
             $table->foreignId('usuario_id')->nullable()->references('id')->on('usuario')->onDelete('CASCADE')->unique();
             $table->foreignId('vendedor_id')->nullable()->references('id')->on('vendedor')->onDelete('CASCADE')->unique();
             $table->foreignId('loja_id')->nullable()->references('id')->on('loja')->onDelete('CASCADE')->unique();
-            $table->string('token')->unique();
+            $table->string('token', 48)->unique();
             $table->timestamps();
         });
     }
