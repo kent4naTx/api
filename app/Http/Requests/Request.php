@@ -35,6 +35,6 @@ class Request extends FormRequest
             "message" => 'Erro de validação!',
             "messageCode" => 'errorValidation',
             "list" => $validator->errors()
-        ], 201));
+        ], 422));
     }
 }
