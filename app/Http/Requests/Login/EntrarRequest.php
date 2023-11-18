@@ -24,7 +24,7 @@ class EntrarRequest extends Request
         return [
             "email" => "required|email|max:80",
             "senha" => "required|min:8",
-            "tipo" => "required|size:1"
+            "tipo" => "required|in:usuario,vendedor,loja"
         ];
     }
 
@@ -34,7 +34,8 @@ class EntrarRequest extends Request
             "required" => "O campo :attribute precisa estar preenchido",
             "email" => "O campo :attribute um email valido",
             "max" => "O campo :attribute pode ter no maximo :max caracteres",
-            "min" => "O campo :attribute pode ter no minimo :min caracteres"
+            "min" => "O campo :attribute pode ter no minimo :min caracteres",
+            "in" => "O campo :attribute precisar estar entre :in"
         ];
     }
 }

@@ -11,24 +11,24 @@ use App\Models\Vendedor\Vendedor;
 use Exception;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Support\Facades\DB;
-use Illuminate\Support\Facades\Hash;
+// HELPERS
+use Helpers\Senhas;
 
 class LoginController extends Controller
 {
-    public function entrar(EntrarRequest $request)
+    public function entrar(EntrarRequest $request): JsonResponse
     {
-        $senha = Hash::make($request->senha);
-
+        $senha = Senhas::criptografar($request->senha);
         try {
-            if ($request->tipo == 1) {
+            if ($request->tipo == "usuario") {
                 $loginExiste = Usuario::where("email", "=", $request->email)
-                    // ->where("senha", "=", $senha)
+                    ->where("senha", "=", $senha)
                     ->get();
-            } else if ($request->tipo == 2) {
+            } else if ($request->tipo == "loja") {
                 $loginExiste = Loja::where("email", "=", $request->email)
                     ->where("senha", "=", $senha)
                     ->get();
-            } else if ($request->tipo == 3) {
+            } else if ($request->tipo == "vendedor") {
                 $loginExiste = Vendedor::where("email", "=", $request->email)
                     ->where("senha", "=", $senha)
                     ->get();
@@ -43,14 +43,14 @@ class LoginController extends Controller
 
         if ($loginExiste->isEmpty()) {
 
-            return parent::apiResponse(201, false, "Credenciais inválidas", $request->validated());
+            return parent::apiResponse(201, false, "Credenciais inválidas");
         }
-        return $loginExiste;
+
         try {
             DB::beginTransaction();
             $login = Login::create([
                 "token" => Login::generateToken(),
-                $loginExiste
+                $request->tipo . "_id" => $loginExiste[0]->id
             ]);
             DB::commit();
         } catch (Exception $e) {
@@ -63,5 +63,7 @@ class LoginController extends Controller
 
     public function sair()
     {
+        
+        return parent::apiResponse(200, true, "Logout realizado");
     }
 }

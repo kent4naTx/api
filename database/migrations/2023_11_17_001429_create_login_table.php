@@ -13,10 +13,10 @@ return new class extends Migration
     {
         Schema::create('login', function (Blueprint $table) {
             $table->id();
-            $table->foreignId('usuario_id')->references('id')->on('usuario')->onDelete('CASCADE')->nullable()->unique();
-            $table->foreignId('vendedor_id')->references('id')->on('vendedor')->onDelete('CASCADE')->nullable()->unique();
-            $table->foreignId('loja_id')->references('id')->on('loja')->onDelete('CASCADE')->nullable()->unique();
-            $table->string('token', 24)->unique();
+            $table->foreignId('usuario_id')->nullable()->references('id')->on('usuario')->onDelete('CASCADE')->unique();
+            $table->foreignId('vendedor_id')->nullable()->references('id')->on('vendedor')->onDelete('CASCADE')->unique();
+            $table->foreignId('loja_id')->nullable()->references('id')->on('loja')->onDelete('CASCADE')->unique();
+            $table->string('token')->unique();
             $table->timestamps();
         });
     }
