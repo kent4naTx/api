@@ -20,7 +20,7 @@ class UsuarioController extends Controller
 
             return parent::apiResponse(201, false, "Não existem usuarios cadastrados");
         }
-        return parent::apiResponse(200, true, "Dados recuperados com sucesso", Usuario::all());
+        return parent::apiResponse(200, true, "Dados recuperados com sucesso", $usuarios);
     }
 
     public function show(int $id): JsonResponse
