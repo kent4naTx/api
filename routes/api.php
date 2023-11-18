@@ -1,6 +1,8 @@
 <?php
 
 use App\Http\Controllers\Admin\AdminController;
+use App\Http\Controllers\Cidade\CidadeController;
+use App\Http\Controllers\Evento\EventoController;
 use App\Http\Controllers\Login\LoginController;
 use App\Http\Controllers\Loja\LojaController;
 use App\Http\Controllers\Usuario\UsuarioController;
@@ -50,3 +52,11 @@ Route::apiResource("loja", LojaController::class);
 /** VENDEDOR */
 Route::apiResource("vendedor", VendedorController::class);
 /** VENDEDOR */
+
+/** EVENTO */
+Route::apiResource("evento", EventoController::class);
+/** EVENTO */
+
+/** CIDADE */
+Route::apiResource("cidade", CidadeController::class);
+/** CIDADE */
