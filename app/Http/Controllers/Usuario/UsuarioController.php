@@ -9,6 +9,7 @@ use App\Models\Usuario\Usuario;
 use Exception;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Hash;
 
 class UsuarioController extends Controller
 {
@@ -30,9 +31,13 @@ class UsuarioController extends Controller
 
     public function store(CriarUsuarioRequest $request): JsonResponse
     {
+
+        $dados = $request->validated();
+        $dados['senha'] = Hash::make($request->senha);
+
         try {
             DB::beginTransaction();
-            $usuario = Usuario::create($request->validated());
+            $usuario = Usuario::create($dados);
             DB::commit();
         } catch (Exception $e) {
             DB::rollBack();
@@ -55,13 +60,17 @@ class UsuarioController extends Controller
         try {
             DB::beginTransaction();
             foreach ($request->validated() as $key => $value) {
-                $usuario->$key = $value;
+                if ($key == "senha") {
+                    $usuario->$key = Hash::make($value);
+                } else {
+                    $usuario->$key = $value;
+                }
             }
             $usuario->save();
             DB::commit();
         } catch (Exception $e) {
             DB::rollback();
-            
+
             return parent::apiResponse(201, false, "Usuario não pode ser atualizado", $e);
         }
 
@@ -76,10 +85,9 @@ class UsuarioController extends Controller
 
             return parent::apiResponse(201, false, "Usuario não foi encontrado");
         }
-
         try {
             DB::beginTransaction();
-            $usuario->destroy();
+            $usuario->delete();
             DB::commit();
         } catch (Exception $e) {
             DB::rollBack();
