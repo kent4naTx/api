@@ -7,9 +7,9 @@ use App\Http\Requests\Loja\AtualizarLojaRequest;
 use App\Http\Requests\Loja\CriarLojaRequest;
 use App\Models\Loja\Loja;
 use Exception;
+use Helpers\Senhas;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Support\Facades\DB;
-use Illuminate\Support\Facades\Hash;
 
 class LojaController extends Controller
 {
@@ -39,7 +39,7 @@ class LojaController extends Controller
     {
 
         $dados = $request->validated();
-        $dados['senha'] = Hash::make($request->senha);
+        $dados['senha'] = Senhas::criptografar($request->senha);
 
         try {
             DB::beginTransaction();
@@ -67,7 +67,7 @@ class LojaController extends Controller
             DB::beginTransaction();
             foreach ($request->validated() as $key => $value) {
                 if ($key == "senha") {
-                    $loja->$key = Hash::make($value);
+                    $loja->$key = Senhas::criptografar($value);
                 } else {
                     $loja->$key = $value;
                 }

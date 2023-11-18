@@ -7,9 +7,9 @@ use App\Http\Requests\Usuario\CriarUsuarioRequest;
 use App\Http\Requests\Usuario\AtualizarUsuarioRequest;
 use App\Models\Usuario\Usuario;
 use Exception;
+use Helpers\Senhas;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Support\Facades\DB;
-use Illuminate\Support\Facades\Hash;
 
 class UsuarioController extends Controller
 {
@@ -38,7 +38,7 @@ class UsuarioController extends Controller
     {
 
         $dados = $request->validated();
-        $dados['senha'] = Hash::make($request->senha);
+        $dados['senha'] = Senhas::criptografar($request->senha);
 
         try {
             DB::beginTransaction();
@@ -66,7 +66,7 @@ class UsuarioController extends Controller
             DB::beginTransaction();
             foreach ($request->validated() as $key => $value) {
                 if ($key == "senha") {
-                    $usuario->$key = Hash::make($value);
+                    $usuario->$key = Senhas::criptografar($value);
                 } else {
                     $usuario->$key = $value;
                 }

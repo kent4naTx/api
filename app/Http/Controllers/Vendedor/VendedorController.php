@@ -7,9 +7,9 @@ use App\Http\Requests\Vendedor\AtualizarVendedorRequest;
 use App\Http\Requests\Vendedor\CriarVendedorRequest;
 use App\Models\Vendedor\Vendedor;
 use Exception;
+use Helpers\Senhas;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Support\Facades\DB;
-use Illuminate\Support\Facades\Hash;
 
 class VendedorController extends Controller
 {
@@ -38,7 +38,7 @@ class VendedorController extends Controller
     {
 
         $dados = $request->validated();
-        $dados['senha'] = Hash::make($request->senha);
+        $dados['senha'] = Senhas::criptografar($request->senha);
         $dados['ativo'] = 1;
 
         try {
@@ -67,7 +67,7 @@ class VendedorController extends Controller
             DB::beginTransaction();
             foreach ($request->validated() as $key => $value) {
                 if ($key == "senha") {
-                    $vendedor->$key = Hash::make($value);
+                    $vendedor->$key = Senhas::criptografar($value);
                 } else {
                     $vendedor->$key = $value;
                 }
