@@ -25,17 +25,17 @@ use Illuminate\Support\Facades\Route;
 Route::apiResource("usuario", UsuarioController::class);
 /** USUARIO */
 
-/** USUARIO */
+/** ADMIN */
 Route::apiResource("admin", AdminController::class);
-/** USUARIO */
+/** ADMIN */
 
-/** USUARIO */
+/** LOJA */
 Route::apiResource("loja", LojaController::class);
-/** USUARIO */
+/** LOJA */
 
-/** USUARIO */
+/** VENDEDOR */
 Route::apiResource("vendedor", VendedorController::class);
-/** USUARIO */
+/** VENDEDOR */
 
 /** LOGIN */
 Route::apiResource("login", LoginController::class);

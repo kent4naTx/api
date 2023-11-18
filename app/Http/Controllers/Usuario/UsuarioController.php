@@ -15,6 +15,11 @@ class UsuarioController extends Controller
 {
     public function index(): JsonResponse
     {
+        $usuarios = Usuario::all();
+        if($usuarios->isEmpty()){
+
+            return parent::apiResponse(201, false, "Não existem usuarios cadastrados");
+        }
         return parent::apiResponse(200, true, "Dados recuperados com sucesso", Usuario::all());
     }
 
