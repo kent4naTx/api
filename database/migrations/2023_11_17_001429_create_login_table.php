@@ -13,7 +13,9 @@ return new class extends Migration
     {
         Schema::create('login', function (Blueprint $table) {
             $table->id();
-            $table->foreignId('usuario_id')->references('id')->on('usuario')->onDelete('CASCADE');
+            $table->foreignId('usuario_id')->references('id')->on('usuario')->onDelete('CASCADE')->nullable()->unique();
+            $table->foreignId('vendedor_id')->references('id')->on('vendedor')->onDelete('CASCADE')->nullable()->unique();
+            $table->foreignId('loja_id')->references('id')->on('loja')->onDelete('CASCADE')->nullable()->unique();
             $table->string('token', 24)->unique();
             $table->timestamps();
         });

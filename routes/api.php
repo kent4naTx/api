@@ -37,6 +37,6 @@ Route::apiResource("vendedor", VendedorController::class);
 /** VENDEDOR */
 
 /** LOGIN */
-Route::apiResource("login", LoginController::class);
+Route::post("entrar", [LoginController::class, "entrar"]);
+Route::post("sair", [LoginController::class, "sair"]);
 /** LOGIN */
-
