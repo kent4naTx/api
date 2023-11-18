@@ -11,8 +11,4 @@ class Login extends Model
     protected $table = "login";
     protected $guarded = [];
 
-    protected static function generateToken()
-    {
-        return bin2hex(random_bytes(24));
-    }
 }

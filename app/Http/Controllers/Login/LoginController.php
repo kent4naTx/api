@@ -9,10 +9,12 @@ use App\Models\Loja\Loja;
 use App\Models\Usuario\Usuario;
 use App\Models\Vendedor\Vendedor;
 use Exception;
+use Illuminate\Http\Request;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Support\Facades\DB;
 // HELPERS
 use Helpers\Senhas;
+use Helpers\Token;
 
 class LoginController extends Controller
 {
@@ -49,7 +51,7 @@ class LoginController extends Controller
         try {
             DB::beginTransaction();
             $login = Login::create([
-                "token" => Login::generateToken(),
+                "token" => Token::gerarToken(),
                 $request->tipo . "_id" => $loginExiste[0]->id
             ]);
             DB::commit();
@@ -61,9 +63,24 @@ class LoginController extends Controller
         return parent::apiResponse(200, true, "Login realizado", $login);
     }
 
-    public function sair()
+    public function sair(Request $request): JsonResponse
     {
-        
+        $login = Token::tokenParaId($request->header("Authorization"));
+
+        if ($login->isEmpty()) {
+
+            return parent::apiResponse(201, false, "Usuario não está logado");
+        }
+        try {
+            DB::beginTransaction();
+            $login[0]->delete();
+            DB::commit();
+        } catch (Exception $e) {
+            DB::rollback();
+
+            return parent::apiResponse(201, false, "Logout falhou", $e);
+        }
+
         return parent::apiResponse(200, true, "Logout realizado");
     }
 }
