@@ -8,4 +8,7 @@ use Illuminate\Database\Eloquent\Model;
 class EventoCidade extends Model
 {
     use HasFactory;
+
+    protected $table = "evento_cidade";
+    protected $guarded = [];
 }

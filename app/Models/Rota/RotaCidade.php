@@ -8,4 +8,6 @@ use Illuminate\Database\Eloquent\Model;
 class RotaCidade extends Model
 {
     use HasFactory;
+    protected $table = "rota_cidade";
+    protected $guarded = [];
 }

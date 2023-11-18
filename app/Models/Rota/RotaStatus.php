@@ -8,4 +8,6 @@ use Illuminate\Database\Eloquent\Model;
 class RotaStatus extends Model
 {
     use HasFactory;
+    protected $table = "rota_status";
+    protected $guarded = [];
 }
