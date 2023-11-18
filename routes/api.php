@@ -20,14 +20,13 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
+/** ADMIN */
+Route::apiResource("admin", AdminController::class);
+/** ADMIN */
 
 /** USUARIO */
 Route::apiResource("usuario", UsuarioController::class);
 /** USUARIO */
-
-/** ADMIN */
-Route::apiResource("admin", AdminController::class);
-/** ADMIN */
 
 /** LOJA */
 Route::apiResource("loja", LojaController::class);
