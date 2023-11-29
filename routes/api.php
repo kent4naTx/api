@@ -5,6 +5,7 @@ use App\Http\Controllers\Cidade\CidadeController;
 use App\Http\Controllers\Evento\EventoController;
 use App\Http\Controllers\Login\LoginController;
 use App\Http\Controllers\Loja\LojaController;
+use App\Http\Controllers\Rota\RotaController;
 use App\Http\Controllers\Usuario\UsuarioController;
 use App\Http\Controllers\Vendedor\VendedorController;
 use App\Http\Middleware\ValidateToken;
@@ -54,9 +55,13 @@ Route::apiResource("vendedor", VendedorController::class);
 /** VENDEDOR */
 
 /** EVENTO */
-Route::apiResource("evento", EventoController::class);
+// Route::apiResource("evento", EventoController::class);
 /** EVENTO */
 
 /** CIDADE */
 Route::apiResource("cidade", CidadeController::class);
 /** CIDADE */
+
+/** ROTAS */
+Route::apiResource("rotas", RotaController::class);
+/** ROTAS */
