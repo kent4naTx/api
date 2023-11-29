@@ -94,7 +94,6 @@ class RotaController extends Controller
 
     public function update(AtualizarRotaRequest $request, int $id): JsonResponse
     {
-
         try {
             DB::beginTransaction();
             $rota = Rota::find($id);
@@ -124,6 +123,13 @@ class RotaController extends Controller
 
             /** ATUALIZANDO CIDADES */
             if ($request->cidade) {
+                for ($i = 0; $i < sizeof($request->cidade); $i++) {
+                    if ($request->cidade[$i]->action == "add") {
+                        // Flixo de adicionar cidade
+                    }else{
+                        // FLuxo de remover cidade
+                    }
+                }
             }
             /** ATUALIZANDO CIDADES */
 
