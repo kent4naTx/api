@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Rota;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\Rota\AtualizarRotaRequest;
 use App\Http\Requests\Rota\CriarRotaRequest;
+use App\Models\Cidade\Cidade;
 use App\Models\Rota\Rota;
 use App\Models\Rota\RotaCidade;
 use App\Models\Rota\RotaStatus;
@@ -92,7 +93,7 @@ class RotaController extends Controller
         ]);
     }
 
-    public function update(AtualizarRotaRequest $request, int $id): JsonResponse
+    public function update(AtualizarRotaRequest $request, int $id)
     {
         try {
             DB::beginTransaction();
@@ -124,10 +125,10 @@ class RotaController extends Controller
             /** ATUALIZANDO CIDADES */
             if ($request->cidade) {
                 for ($i = 0; $i < sizeof($request->cidade); $i++) {
-                    if ($request->cidade[$i]->action == "add") {
-                        // Flixo de adicionar cidade
-                    }else{
-                        // FLuxo de remover cidade
+                    if ($request->cidade[$i]['action'] == "add") {
+                        RotaCidadeController::vincularRotas($rota->id, [$request->cidade[$i]['cidade_id']]);
+                    } else {
+                        RotaCidadeController::desvincularRotas($request->cidade[$i]['cidade_id']);
                     }
                 }
             }

@@ -34,4 +34,33 @@ class RotaCidadeController extends Controller
             "error" => []
         ];
     }
+
+    public static function desvincularRotas($id)
+    {
+
+        $rota = RotaCidade::where('cidade_id', '=', $id)->get();
+
+        if (sizeof($rota) <= 0) {
+
+            return [
+                "status" => false,
+                "error" => []
+            ];
+        }
+
+        try {
+            $rota[0]->delete();
+
+            return [
+                "status" => true,
+                "error" => []
+            ];
+        } catch (Exception $e) {
+
+            return [
+                "status" => false,
+                "error" => $e
+            ];
+        }
+    }
 }
