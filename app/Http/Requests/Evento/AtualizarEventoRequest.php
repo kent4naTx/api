@@ -25,7 +25,7 @@ class AtualizarEventoRequest extends Request
             "nome" => "max:80",
             "inicio" => "date",
             "fim" => "date",
-            "cidade" => "exists:cidade,id",
+            "cidade" => "array",
         ];
     }
 
@@ -33,7 +33,7 @@ class AtualizarEventoRequest extends Request
     {
         return [
             "date" => "O :attribute precisa ser uma data válida",
-            "exists" => "O :attribute não existe"
+            "array" => "O :attribute não existe"
         ];
     }
 }

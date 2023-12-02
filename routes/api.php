@@ -55,7 +55,7 @@ Route::apiResource("vendedor", VendedorController::class);
 /** VENDEDOR */
 
 /** EVENTO */
-// Route::apiResource("evento", EventoController::class);
+Route::apiResource("evento", EventoController::class);
 /** EVENTO */
 
 /** CIDADE */

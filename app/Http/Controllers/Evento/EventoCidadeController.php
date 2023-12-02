@@ -9,7 +9,7 @@ use Illuminate\Http\Request;
 
 class EventoCidadeController extends Controller
 {
-    public static function vincularCidade($evento_id, $cidade_id)
+    public static function vincularCidade($evento_id, $cidade_id):array
     {
         try {
 

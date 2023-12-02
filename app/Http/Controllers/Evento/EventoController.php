@@ -97,12 +97,10 @@ class EventoController extends Controller
 
             /** ATUALIZANDO CIDADES */
             if ($request->cidade) {
-                for ($i = 0; $i < sizeof($request->cidade); $i++) {
-                    if ($request->cidade[$i]['action'] == "add") {
-                        EventoCidadeController::vincularCidade($evento->id, $request->cidade);
-                    } else {
-                        EventoCidadeController::desvincularCidade($request->cidade);
-                    }
+                if ($request->cidade['action'] == "add") {
+                    EventoCidadeController::vincularCidade($evento->id, $request->cidade["cidade_id"]);
+                } else {
+                    EventoCidadeController::desvincularCidade($request->cidade);
                 }
             }
             /** ATUALIZANDO CIDADES */
