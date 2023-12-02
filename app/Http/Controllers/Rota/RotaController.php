@@ -93,7 +93,7 @@ class RotaController extends Controller
         ]);
     }
 
-    public function update(AtualizarRotaRequest $request, int $id)
+    public function update(AtualizarRotaRequest $request, int $id): JsonResponse
     {
         try {
             DB::beginTransaction();

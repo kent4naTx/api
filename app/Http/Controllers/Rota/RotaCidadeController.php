@@ -35,20 +35,18 @@ class RotaCidadeController extends Controller
         ];
     }
 
-    public static function desvincularRotas($id)
+    public static function desvincularRotas($id): array
     {
-
-        $rota = RotaCidade::where('cidade_id', '=', $id)->get();
-
-        if (sizeof($rota) <= 0) {
-
-            return [
-                "status" => false,
-                "error" => []
-            ];
-        }
-
         try {
+            $rota = RotaCidade::where('cidade_id', '=', $id)->get();
+
+            if (sizeof($rota) <= 0) {
+
+                return [
+                    "status" => false,
+                    "error" => []
+                ];
+            }
             $rota[0]->delete();
 
             return [
