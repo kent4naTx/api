@@ -19,13 +19,13 @@ class ValidateToken
 
             return response()->json([
                 "status" => false,
-                "mensagem" => "Token não informado",
+                "mensagem" => "tokenNotInformed",
             ], 401);
         } else if (strlen($request->header("Authorization")) != 48) {
 
             return response()->json([
                 "status" => false,
-                "mensagem" => "Token inválido",
+                "mensagem" => "tokenInvalid",
             ], 401);
         }
 

@@ -9,12 +9,12 @@ use App\Models\Loja\Loja;
 use App\Models\Usuario\Usuario;
 use App\Models\Vendedor\Vendedor;
 use Exception;
-use Illuminate\Http\Request;
-use Illuminate\Http\JsonResponse;
-use Illuminate\Support\Facades\DB;
-// HELPERS
 use Helpers\Senhas;
 use Helpers\Token;
+use Illuminate\Http\JsonResponse;
+// HELPERS
+use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
 
 class LoginController extends Controller
 {
@@ -36,31 +36,31 @@ class LoginController extends Controller
                     ->get();
             } else {
 
-                return parent::apiResponse(201, false, "Tipo de usuario não reconhecido");
+                return parent::apiResponse(201, false, "userTypeError");
             }
         } catch (Exception $e) {
 
-            return parent::apiResponse(201, false, "Erro ao testar credenciais", $e);
+            return parent::apiResponse(201, false, "credentialsError", $e);
         }
 
         if ($loginExiste->isEmpty()) {
 
-            return parent::apiResponse(201, false, "Credenciais inválidas");
+            return parent::apiResponse(201, false, "credentialsInvalid");
         }
 
         try {
             DB::beginTransaction();
             $login = Login::create([
                 "token" => Token::gerarToken(),
-                $request->tipo . "_id" => $loginExiste[0]->id
+                $request->tipo . "_id" => $loginExiste[0]->id,
             ]);
             DB::commit();
         } catch (Exception $e) {
 
-            return parent::apiResponse(201, false, "Login falhou", $e);
+            return parent::apiResponse(201, false, "loginFailed", $e);
         }
 
-        return parent::apiResponse(200, true, "Login realizado", $login);
+        return parent::apiResponse(200, true, "loginSuccess", $login);
     }
 
     public function sair(Request $request): JsonResponse
@@ -69,7 +69,7 @@ class LoginController extends Controller
 
         if ($login->isEmpty()) {
 
-            return parent::apiResponse(201, false, "Usuario não está logado");
+            return parent::apiResponse(201, false, "userNotLogged");
         }
         try {
             DB::beginTransaction();
@@ -78,9 +78,9 @@ class LoginController extends Controller
         } catch (Exception $e) {
             DB::rollback();
 
-            return parent::apiResponse(201, false, "Logout falhou", $e);
+            return parent::apiResponse(201, false, "logoutFailed", $e);
         }
 
-        return parent::apiResponse(200, true, "Logout realizado");
+        return parent::apiResponse(200, true, "logoutSuccess");
     }
 }

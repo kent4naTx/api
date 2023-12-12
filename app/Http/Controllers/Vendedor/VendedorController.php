@@ -18,9 +18,9 @@ class VendedorController extends Controller
         $vendedors = Vendedor::all();
         if ($vendedors->isEmpty()) {
 
-            return parent::apiResponse(201, false, "Não existem vendedores cadastrados");
+            return parent::apiResponse(201, false, "dataNotFound");
         }
-        return parent::apiResponse(200, true, "Dados recuperados com sucesso", Vendedor::all());
+        return parent::apiResponse(200, true, "dataRetrieveSuccess", Vendedor::all());
     }
 
     public function show(int $id): JsonResponse
@@ -28,10 +28,10 @@ class VendedorController extends Controller
         $vendedor = Vendedor::find($id);
         if (is_null($vendedor)) {
 
-            return parent::apiResponse(201, false, "Vendedor não existe");
+            return parent::apiResponse(201, false, "dataNotFound");
         }
 
-        return parent::apiResponse(200, true, "Dados recuperados com sucesso", $vendedor);
+        return parent::apiResponse(200, true, "dataRetrieveSuccess", $vendedor);
     }
 
     public function store(CriarVendedorRequest $request): JsonResponse
@@ -48,10 +48,10 @@ class VendedorController extends Controller
         } catch (Exception $e) {
             DB::rollBack();
 
-            return parent::apiResponse(201, false, "Não foi possível criar vendedor", $e);
+            return parent::apiResponse(201, false, "dataCreateFailed", $e);
         }
 
-        return parent::apiResponse(200, true, "Dados Criados com sucesso", $vendedor);
+        return parent::apiResponse(200, true, "dataCreateSuccess", $vendedor);
     }
 
     public function update(AtualizarVendedorRequest $request, int $id): JsonResponse
@@ -60,7 +60,7 @@ class VendedorController extends Controller
         $vendedor = Vendedor::find($id);
         if (is_null($vendedor)) {
 
-            return parent::apiResponse(201, false, "Vendedor não foi encontrado");
+            return parent::apiResponse(201, false, "dataNotFound");
         }
 
         try {
@@ -77,10 +77,10 @@ class VendedorController extends Controller
         } catch (Exception $e) {
             DB::rollback();
 
-            return parent::apiResponse(201, false, "Vendedor não pode ser atualizado", $e);
+            return parent::apiResponse(201, false, "dataUpdateFailed", $e);
         }
 
-        return parent::apiResponse(200, true, "Dados foram atualizados com sucesso", $vendedor);
+        return parent::apiResponse(200, true, "dataUpdateSuccess", $vendedor);
     }
 
     public function destroy(int $id): JsonResponse
@@ -89,7 +89,7 @@ class VendedorController extends Controller
         $vendedor = Vendedor::find($id);
         if (is_null($vendedor)) {
 
-            return parent::apiResponse(201, false, "Vendedor não foi encontrado");
+            return parent::apiResponse(201, false, "dataNotFound");
         }
         try {
             DB::beginTransaction();
@@ -98,8 +98,8 @@ class VendedorController extends Controller
         } catch (Exception $e) {
             DB::rollBack();
 
-            return parent::apiResponse(201, false, "Vendedor não pode ser deletado", $e);
+            return parent::apiResponse(201, false, "dataDeleteFailed", $e);
         }
-        return parent::apiResponse(200, true, "Vendedor foi deleteado com sucesso", $vendedor);
+        return parent::apiResponse(200, true, "dataDeleteSuccess", $vendedor);
     }
 }

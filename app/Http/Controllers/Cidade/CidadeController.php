@@ -17,9 +17,9 @@ class CidadeController extends Controller
         $cidades = Cidade::all();
         if ($cidades->isEmpty()) {
 
-            return parent::apiResponse(201, false, "Não existem cidades cadastradas");
+            return parent::apiResponse(201, false, "dataNotFound");
         }
-        return parent::apiResponse(200, true, "Dados recuperados com sucesso", $cidades);
+        return parent::apiResponse(200, true, "dataRetrieveSuccess", $cidades);
     }
 
     public function show(int $id): JsonResponse
@@ -27,10 +27,10 @@ class CidadeController extends Controller
         $cidade = Cidade::find($id);
         if (is_null($cidade)) {
 
-            return parent::apiResponse(201, false, "Cidade não existe");
+            return parent::apiResponse(201, false, "dataNotFound");
         }
 
-        return parent::apiResponse(200, true, "Dados recuperados com sucesso", $cidade);
+        return parent::apiResponse(200, true, "dataRetrieveSuccess", $cidade);
     }
 
     public function store(CriarCidadeRequest $request): JsonResponse
@@ -42,10 +42,10 @@ class CidadeController extends Controller
         } catch (Exception $e) {
             DB::rollBack();
 
-            return parent::apiResponse(201, false, "Dados não puderam ser criados", $e);
+            return parent::apiResponse(201, false, "dataCreateFailed", $e);
         }
 
-        return parent::apiResponse(200, true, "Dados criados com sucesso", $cidade);
+        return parent::apiResponse(200, true, "dataCreateSuccess", $cidade);
     }
 
     public function update(AtualizarCidadeRequest $request, int $id): JsonResponse
@@ -61,9 +61,9 @@ class CidadeController extends Controller
         } catch (Exception $e) {
             DB::rollback();
 
-            return parent::apiResponse(201, false, "Atualizar dados falhou", $e);
+            return parent::apiResponse(201, false, "dataUpdateFailed", $e);
         }
-        return parent::apiResponse(200, true, "Dados foram atualizado com sucesso", $cidade);
+        return parent::apiResponse(200, true, "dataUpdateSuccess", $cidade);
     }
 
     public function destroy(int $id): JsonResponse
@@ -72,7 +72,7 @@ class CidadeController extends Controller
         $cidade = Cidade::find($id);
         if (is_null($cidade)) {
 
-            return parent::apiResponse(201, false, "Usuario não foi encontrado");
+            return parent::apiResponse(201, false, "dataNotFound");
         }
         try {
             DB::beginTransaction();
@@ -81,8 +81,8 @@ class CidadeController extends Controller
         } catch (Exception $e) {
             DB::rollBack();
 
-            return parent::apiResponse(201, false, "Usuario não pode ser deletado", $e);
+            return parent::apiResponse(201, false, "dataDeleteFailed", $e);
         }
-        return parent::apiResponse(200, true, "Usuario foi deleteado com sucesso", $cidade);
+        return parent::apiResponse(200, true, "dataDeleteSuccess", $cidade);
     }
 }

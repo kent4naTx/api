@@ -18,10 +18,10 @@ class LojaController extends Controller
         $lojas = Loja::all();
         if ($lojas->isEmpty()) {
 
-            return parent::apiResponse(201, false, "Não existem lojas cadastradas");
+            return parent::apiResponse(201, false, "dataNotFound");
         }
 
-        return parent::apiResponse(200, true, "Dados recuperados com sucesso", $lojas);
+        return parent::apiResponse(200, true, "dataRetrieveSuccess", $lojas);
     }
 
     public function show(int $id): JsonResponse
@@ -29,10 +29,10 @@ class LojaController extends Controller
         $loja = Loja::find($id);
         if (is_null($loja)) {
 
-            return parent::apiResponse(201, false, "Loja não existe");
+            return parent::apiResponse(201, false, "dataNotFound");
         }
 
-        return parent::apiResponse(200, true, "Dados recuperados com sucesso", $loja);
+        return parent::apiResponse(200, true, "dataRetrieveSuccess", $loja);
     }
 
     public function store(CriarLojaRequest $request): JsonResponse
@@ -48,10 +48,10 @@ class LojaController extends Controller
         } catch (Exception $e) {
             DB::rollBack();
 
-            return parent::apiResponse(201, false, "Não foi possível criar loja", $e);
+            return parent::apiResponse(201, false, "dataCreateFailed", $e);
         }
 
-        return parent::apiResponse(200, true, "Dados Criados com sucesso", $loja);
+        return parent::apiResponse(200, true, "dataCreateSuccess", $loja);
     }
 
     public function update(AtualizarLojaRequest $request, int $id): JsonResponse
@@ -60,7 +60,7 @@ class LojaController extends Controller
         $loja = Loja::find($id);
         if (is_null($loja)) {
 
-            return parent::apiResponse(201, false, "Loja não foi encontrado");
+            return parent::apiResponse(201, false, "dataNotFound");
         }
 
         try {
@@ -77,10 +77,10 @@ class LojaController extends Controller
         } catch (Exception $e) {
             DB::rollback();
 
-            return parent::apiResponse(201, false, "Loja não pode ser atualizado", $e);
+            return parent::apiResponse(201, false, "updateDataFailed", $e);
         }
 
-        return parent::apiResponse(200, true, "Dados foram atualizados com sucesso", $loja);
+        return parent::apiResponse(200, true, "updateDataSuccess", $loja);
     }
 
     public function destroy(int $id): JsonResponse
@@ -89,7 +89,7 @@ class LojaController extends Controller
         $loja = Loja::find($id);
         if (is_null($loja)) {
 
-            return parent::apiResponse(201, false, "Loja não foi encontrado");
+            return parent::apiResponse(201, false, "dataNotFound");
         }
         try {
             DB::beginTransaction();
@@ -98,9 +98,9 @@ class LojaController extends Controller
         } catch (Exception $e) {
             DB::rollBack();
 
-            return parent::apiResponse(201, false, "Loja não pode ser deletado", $e);
+            return parent::apiResponse(201, false, "dataDeleteFailed", $e);
         }
 
-        return parent::apiResponse(200, true, "Loja foi deleteado com sucesso", $loja);
+        return parent::apiResponse(200, true, "dataDeleteSuccess", $loja);
     }
 }

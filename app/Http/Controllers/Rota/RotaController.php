@@ -7,7 +7,6 @@ use App\Http\Requests\Rota\AtualizarRotaRequest;
 use App\Http\Requests\Rota\CriarRotaRequest;
 use App\Models\Cidade\Cidade;
 use App\Models\Rota\Rota;
-use App\Models\Rota\RotaCidade;
 use App\Models\Rota\RotaStatus;
 use App\Models\Rota\RotaVendedor;
 use Exception;
@@ -21,9 +20,9 @@ class RotaController extends Controller
         $rotas = Rota::all();
         if ($rotas->isEmpty()) {
 
-            return parent::apiResponse(201, false, "Não existem rotas cadastradas");
+            return parent::apiResponse(201, false, "dataNotFound");
         }
-        return parent::apiResponse(200, true, "Dados recuperados com sucesso", $rotas);
+        return parent::apiResponse(200, true, "dataRetrieveSuccess", $rotas);
     }
 
     public function show(int $id): JsonResponse
@@ -31,10 +30,10 @@ class RotaController extends Controller
         $rota = Rota::find($id);
         if (is_null($rota)) {
 
-            return parent::apiResponse(201, false, "Rota não existe");
+            return parent::apiResponse(201, false, "dataNotFound");
         }
 
-        return parent::apiResponse(200, true, "Dados recuperados com sucesso", $rota);
+        return parent::apiResponse(200, true, "dataRetrieveSuccess", $rota);
     }
 
     public function store(CriarRotaRequest $request): JsonResponse
@@ -44,7 +43,7 @@ class RotaController extends Controller
             /** CADASTRAR NA ROTA*/
             $rota = Rota::create([
                 "nome" => $request->nome,
-                "descricao" => $request->descricao
+                "descricao" => $request->descricao,
             ]);
             /** CADASTRAR NA ROTA*/
 
@@ -53,7 +52,7 @@ class RotaController extends Controller
                 $cidades_vinculo = RotaCidadeController::vincularRotas($rota->id, $request->cidade);
                 if ($cidades_vinculo['status'] == false) {
 
-                    return parent::apiResponse(201, false, "Não foi possível vincular rotas", $cidades_vinculo["error"]);
+                    return parent::apiResponse(201, false, "linkRouteCityFailed", $cidades_vinculo["error"]);
                 }
             }
             /** VINCULAR ROTAS COM CIDADE */
@@ -63,7 +62,7 @@ class RotaController extends Controller
                 $vendedor_vinculo = RotaVendedorController::vincularVendedor($rota->id, $request->vendedor);
                 if ($vendedor_vinculo['status'] == false) {
 
-                    return parent::apiResponse(201, false, "Não foi possível vincular vendedor", $vendedor_vinculo['error']);
+                    return parent::apiResponse(201, false, "linkRouteSalesmanFailed", $vendedor_vinculo['error']);
                 }
             }
             /** VINCULAR ROTA COM VENDEDOR */
@@ -73,7 +72,7 @@ class RotaController extends Controller
                 $status_vinculo = RotaStatusController::vincularStatus($rota->id, $request->status);
                 if ($status_vinculo['status'] == false) {
 
-                    return parent::apiResponse(201, false, "Não foi possível vincular status com rota", $status_vinculo['error']);
+                    return parent::apiResponse(201, false, "linkRouteStatusFailed", $status_vinculo['error']);
                 }
             }
             /** ADICIONAR STATUS DE ROTA */
@@ -82,14 +81,14 @@ class RotaController extends Controller
         } catch (Exception $e) {
             DB::rollBack();
 
-            return parent::apiResponse(201, false, "Dados não puderam ser criados", $e);
+            return parent::apiResponse(201, false, "dataCreateFailed", $e);
         }
 
-        return parent::apiResponse(200, true, "Dados criados com sucesso", [
+        return parent::apiResponse(200, true, "dataCreateSuccess", [
             "rota" => $rota,
             "cidades" => $cidades_vinculo ?? [],
             "vendedor" => $vendedor_vinculo ?? [],
-            "status" => $status_vinculo ?? []
+            "status" => $status_vinculo ?? [],
         ]);
     }
 
@@ -134,15 +133,14 @@ class RotaController extends Controller
             }
             /** ATUALIZANDO CIDADES */
 
-
             $rota->save();
             DB::commit();
         } catch (Exception $e) {
             DB::rollback();
 
-            return parent::apiResponse(201, false, "Atualizar dados falhou", $e);
+            return parent::apiResponse(201, false, "dataUpdateFailed", $e);
         }
-        return parent::apiResponse(200, true, "Dados foram atualizado com sucesso", $rota);
+        return parent::apiResponse(200, true, "dataUpdateSuccess", $rota);
     }
 
     public function destroy(int $id): JsonResponse
@@ -152,7 +150,7 @@ class RotaController extends Controller
 
         if (is_null($rota)) {
 
-            return parent::apiResponse(201, false, "Dados não foram encontrados");
+            return parent::apiResponse(201, false, "dataNotFound");
         }
         try {
             DB::beginTransaction();
@@ -161,8 +159,8 @@ class RotaController extends Controller
         } catch (Exception $e) {
             DB::rollBack();
 
-            return parent::apiResponse(201, false, "Dados não puderam ser deletados", $e);
+            return parent::apiResponse(201, false, "dataDeleteFailed", $e);
         }
-        return parent::apiResponse(200, true, "Dados foram deletados com sucesso", $rota);
+        return parent::apiResponse(200, true, "dataDeleteSuccess", $rota);
     }
 }
