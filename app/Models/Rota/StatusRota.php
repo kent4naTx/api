@@ -2,14 +2,13 @@
 
 namespace App\Models\Rota;
 
-use App\Models\LinkedModel;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
-class Rota extends LinkedModel
+class StatusRota extends Model
 {
     use HasFactory;
-    protected $table = "rota";
-    protected $guarded = [];
 
+    protected $table = 'status_rota';
+    protected $guarded = [];
 }

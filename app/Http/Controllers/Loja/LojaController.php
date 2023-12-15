@@ -26,10 +26,19 @@ class LojaController extends Controller
 
     public function show(int $id): JsonResponse
     {
-        $loja = Loja::find($id);
-        if (is_null($loja)) {
+        try {
+            DB::beginTransaction();
+            $loja = Loja::find($id);
+            if (is_null($loja)) {
 
-            return parent::apiResponse(201, false, "dataNotFound");
+                return parent::apiResponse(201, false, "dataNotFound");
+            }
+
+            DB::commit();
+        } catch (Exception $e) {
+            DB::rollback();
+
+            return parent::apiResponse(201, false, "dataRetrieve");
         }
 
         return parent::apiResponse(200, true, "dataRetrieveSuccess", $loja);

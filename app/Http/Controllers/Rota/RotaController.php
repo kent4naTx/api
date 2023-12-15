@@ -5,8 +5,8 @@ namespace App\Http\Controllers\Rota;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\Rota\AtualizarRotaRequest;
 use App\Http\Requests\Rota\CriarRotaRequest;
-use App\Models\Cidade\Cidade;
 use App\Models\Rota\Rota;
+use App\Models\Rota\RotaCidade;
 use App\Models\Rota\RotaStatus;
 use App\Models\Rota\RotaVendedor;
 use Exception;
@@ -33,7 +33,12 @@ class RotaController extends Controller
             return parent::apiResponse(201, false, "dataNotFound");
         }
 
-        return parent::apiResponse(200, true, "dataRetrieveSuccess", $rota);
+        return parent::apiResponse(200, true, "dataRetrieveSuccess", [
+            "rota" => $rota,
+            "cidades" => $rota->linkTo(new RotaCidade, $id, "cidade"),
+            "status" => $rota->linkTo(new RotaStatus, $id, "sattus"),
+            "vendedor" => $rota->linkTo(new RotaVendedor, $id, "vendedor")
+        ]);
     }
 
     public function store(CriarRotaRequest $request): JsonResponse
