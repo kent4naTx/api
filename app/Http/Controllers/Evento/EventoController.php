@@ -7,6 +7,7 @@ use App\Http\Controllers\Rota\RotaStatusController;
 use App\Http\Requests\Evento\AtualizarEventoRequest;
 use App\Http\Requests\Evento\CriarEventoRequest;
 use App\Models\Evento\Evento;
+use App\Models\Evento\EventoCidade;
 use App\Models\Evento\EventoTipo;
 use Exception;
 use Illuminate\Http\JsonResponse;
@@ -33,7 +34,12 @@ class EventoController extends Controller
             return parent::apiResponse(201, false, "dataNotFound");
         }
 
-        return parent::apiResponse(200, true, "dataRetrieveSuccess", $evento);
+        return parent::apiResponse(200, true, "dataRetrieveSuccess", [
+            "evento" => $evento,
+            "cidades" => $evento->linkTo(new EventoCidade, 'evento_id',  $id, 'cidade'),
+            "tipo" => $evento->linkTo(new EventoTipo, 'evento_id', $id, 'tipo'),
+
+        ]);
     }
 
     public function store(CriarEventoRequest $request): JsonResponse
