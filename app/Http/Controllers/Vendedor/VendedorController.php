@@ -6,6 +6,9 @@ use App\Http\Controllers\Controller;
 use App\Http\Requests\Vendedor\AtualizarVendedorRequest;
 use App\Http\Requests\Vendedor\CriarVendedorRequest;
 use App\Models\Vendedor\Vendedor;
+use App\Models\Vendedor\VendedorDocumento;
+use App\Models\Vendedor\VendedorEndereco;
+use App\Models\Vendedor\VendedorTelefone;
 use Exception;
 use Helpers\Senhas;
 use Illuminate\Http\JsonResponse;
@@ -15,12 +18,12 @@ class VendedorController extends Controller
 {
     public function index(): JsonResponse
     {
-        $vendedors = Vendedor::all();
-        if ($vendedors->isEmpty()) {
+        $vendedores = Vendedor::all();
+        if ($vendedores->isEmpty()) {
 
             return parent::apiResponse(201, false, "dataNotFound");
         }
-        return parent::apiResponse(200, true, "dataRetrieveSuccess", Vendedor::all());
+        return parent::apiResponse(200, true, "dataRetrieveSuccess", $vendedores);
     }
 
     public function show(int $id): JsonResponse
@@ -31,7 +34,12 @@ class VendedorController extends Controller
             return parent::apiResponse(201, false, "dataNotFound");
         }
 
-        return parent::apiResponse(200, true, "dataRetrieveSuccess", $vendedor);
+        return parent::apiResponse(200, true, "dataRetrieveSuccess", [
+            "vendedor" => $vendedor,
+            "documento" => $vendedor->linkTo(new VendedorDocumento, "vendedor_id", $id, "documento"),
+            "telefone" => $vendedor->linkTo(new VendedorTelefone, "vendedor_id", $id, "telefone"),
+            "endereco" => $vendedor->linkTo(new VendedorEndereco, "vendedor_id", $id, "endereco")
+        ]);
     }
 
     public function store(CriarVendedorRequest $request): JsonResponse

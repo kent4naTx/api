@@ -5,7 +5,12 @@ namespace App\Http\Controllers\Usuario;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\Usuario\CriarUsuarioRequest;
 use App\Http\Requests\Usuario\AtualizarUsuarioRequest;
+use App\Models\Documento\Documento;
+use App\Models\Endereco\Endereco;
+use App\Models\Telefone\Telefone;
 use App\Models\Usuario\Usuario;
+use App\Models\Usuario\UsuarioDocumento;
+use App\Models\Usuario\UsuarioEndereco;
 use Exception;
 use Helpers\Senhas;
 use Illuminate\Http\JsonResponse;
@@ -16,7 +21,7 @@ class UsuarioController extends Controller
     public function index(): JsonResponse
     {
         $usuarios = Usuario::all();
-        if($usuarios->isEmpty()){
+        if ($usuarios->isEmpty()) {
 
             return parent::apiResponse(201, false, "dataNotFound");
         }
@@ -42,7 +47,54 @@ class UsuarioController extends Controller
 
         try {
             DB::beginTransaction();
-            $usuario = Usuario::create($dados);
+
+            /** CRIANDO USUARIO */
+            $usuario = Usuario::create([
+                "nome" => $dados->nome,
+                "email" => $dados->email,
+                "senha" => $dados->senha
+            ]);
+            /** CRIANDO USUARIO */
+
+            /** CRIANDO DUCUMENTO */
+            $documento = Documento::create([
+                "tipo" => $dados->tipo_documento,
+                "numero" => $dados->numero_documento
+            ]);
+            $vincular_documento = UsuarioDocumento::create([
+                "usuario_id" => $usuario->id,
+                "documento_id" => $documento->id
+            ]);
+            /** CRIANDO DUCUMENTO */
+
+            /** CRIANDO ENDERECO */
+            $endereco = Endereco::create([
+                "cep" => $dados->cep,
+                "bairro" => $dados->bairro,
+                "rua" => $dados->rua,
+                "numero" => $dados->numero_documento
+
+            ]);
+            $vincular_endereco = UsuarioEndereco::create([
+                "usuario_id" => $usuario->id,
+                "endereco_id" => $endereco->id
+            ]);
+            /** CRIANDO ENDERECO */
+
+
+            /** CRIANDO TELEFONE */
+            $telefone = Telefone::create([
+                "numero" => $dados->numero_telefone,
+                "tipo" => $dados->tipo_telefone,
+                "principal" => $dados->principal,
+
+            ]);
+            $vincular_telefone = UsuarioEndereco::create([
+                "usuario_id" => $usuario->id,
+                "telefone_id" => $telefone->id
+            ]);
+            /** CRIANDO TELEFONE */
+
             DB::commit();
         } catch (Exception $e) {
             DB::rollBack();

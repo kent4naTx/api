@@ -1,11 +1,11 @@
 <?php
 
-namespace App\Http\Requests\Usuario;
+namespace App\Http\Requests\Telefone;
 
 use App\Http\Requests\Request;
 use Illuminate\Foundation\Http\FormRequest;
 
-class AtualizarUsuarioRequest extends Request
+class AtualizarTelefoneRequest extends Request
 {
     /**
      * Determine if the user is authorized to make this request.
@@ -23,15 +23,9 @@ class AtualizarUsuarioRequest extends Request
     public function rules(): array
     {
         return [
-            "nome" => "max:80",
-            "email" => "email|max:80|unique:usuario,email",
-            "senha" => "min:8",
-            "tipo_documento" => "",
-            "numero_documento" => "max:14",
-            "cep" => "max:10",
-            "bairro" => "max:80",
-            "rua" => "required|max:80",
-            "numero_endereco" => "max:6",
+            "numero_telefone" => "max:15",
+            "tipo_telefone" => "",
+            "principal" => "boolean"
         ];
     }
 
@@ -39,9 +33,7 @@ class AtualizarUsuarioRequest extends Request
     {
         return [
             "max" => "O campo :attribute precisa ter no maxismo :max caracteres",
-            "email" => "O campo :attribute precisa ser um email válido",
-            "unique" => "O :attribute já existe",
-            "min" => "O campo :attribute precisa ter no minimo :min caracteres",
+            "boolean" => "O campo :attribute precisa ser boolean",
         ];
     }
 }
