@@ -65,8 +65,8 @@ class UsuarioController extends Controller
 
             /** CRIANDO DUCUMENTO */
             $documento = Documento::create([
-                "tipo" => $dados->tipo_documento,
-                "numero" => $dados->numero_documento
+                "tipo" => $dados['tipo_documento'],
+                "numero" => $dados['numero_documento']
             ]);
             $vincular_documento = UsuarioDocumento::create([
                 "usuario_id" => $usuario->id,

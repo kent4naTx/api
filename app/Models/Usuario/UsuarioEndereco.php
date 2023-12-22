@@ -14,6 +14,6 @@ class UsuarioEndereco extends Model
 
     public function endereco()
     {
-        return $this->belongsTo(Endereco::class, 'telefone_id');
+        return $this->belongsTo(Endereco::class, 'endereco_id');
     }
 }
