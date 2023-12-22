@@ -5,10 +5,13 @@ namespace App\Http\Controllers\Loja;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\Loja\AtualizarLojaRequest;
 use App\Http\Requests\Loja\CriarLojaRequest;
+use App\Models\Documento\Documento;
+use App\Models\Endereco\Endereco;
 use App\Models\Loja\Loja;
 use App\Models\Loja\LojaDocumento;
 use App\Models\Loja\LojaEndereco;
 use App\Models\Loja\LojaTelefone;
+use App\Models\Telefone\Telefone;
 use Exception;
 use Helpers\Senhas;
 use Illuminate\Http\JsonResponse;
@@ -48,7 +51,7 @@ class LojaController extends Controller
             "loja" => $loja,
             "documento" => $loja->linkTo(new LojaDocumento, 'loja_id', $id, 'documento'),
             "telefone" => $loja->linkTo(new LojaTelefone, 'loja_id', $id, 'telefone'),
-            "endereco" => $loja->linkTo(new LojaEndereco, 'loja_id', $id, 'endereco')
+            "endereco" => $loja->linkTo(new LojaEndereco, 'loja_id', $id, 'endereco'),
         ]);
     }
 
@@ -60,7 +63,52 @@ class LojaController extends Controller
 
         try {
             DB::beginTransaction();
-            $loja = Loja::create($dados);
+            /** CRIANDO LOJA */
+            $loja = Loja::create([
+                "nome" => $dados['nome'],
+                "email" => $dados['email'],
+                "senha" => $dados['senha'],
+            ]);
+            /** CRIANDO LOJA */
+
+            /** CRIANDO DUCUMENTO */
+            $documento = Documento::create([
+                "tipo" => $dados['tipo_documento'],
+                "numero" => $dados['numero_documento'],
+            ]);
+            $vincular_documento = LojaDocumento::create([
+                "loja_id" => $loja->id,
+                "documento_id" => $documento->id,
+            ]);
+            /** CRIANDO DUCUMENTO */
+
+            /** CRIANDO ENDERECO */
+            $endereco = Endereco::create([
+                "cep" => $dados['cep'],
+                "bairro" => $dados['bairro'],
+                "rua" => $dados['rua'],
+                "numero" => $dados['numero_endereco'],
+
+            ]);
+            $vincular_endereco = LojaEndereco::create([
+                "loja_id" => $loja->id,
+                "endereco_id" => $endereco->id,
+            ]);
+            /** CRIANDO ENDERECO */
+
+            /** CRIANDO TELEFONE */
+            $telefone = Telefone::create([
+                "numero" => $dados['numero_telefone'],
+                "tipo" => $dados['tipo_telefone'],
+                "principal" => $dados['principal'],
+
+            ]);
+            $vincular_telefone = LojaTelefone::create([
+                "loja_id" => $loja->id,
+                "telefone_id" => $telefone->id,
+            ]);
+            /** CRIANDO TELEFONE */
+
             DB::commit();
         } catch (Exception $e) {
             DB::rollBack();
@@ -89,7 +137,7 @@ class LojaController extends Controller
                     $loja->$key = $value;
                 }
             }
-            $loja->update();
+            $loja->save();
             DB::commit();
         } catch (Exception $e) {
             DB::rollback();

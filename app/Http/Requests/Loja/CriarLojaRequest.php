@@ -23,8 +23,17 @@ class CriarLojaRequest extends Request
     {
         return [
             "nome" => "required|max:80",
-            "email" => "required|email|max:80|unique:loja,email",
+            "email" => "required|email|max:80|unique:usuario,email",
             "senha" => "required|min:8",
+            "tipo_documento" => "required",
+            "numero_documento" => "required|max:14",
+            "cep" => "required|max:10",
+            "bairro" => "required|max:80",
+            "rua" => "required|max:80",
+            "numero_endereco" => "required|max:6",
+            "numero_telefone" => "required|max:15",
+            "tipo_telefone" => "required",
+            "principal" => "required|boolean"
         ];
     }
 

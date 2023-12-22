@@ -41,11 +41,11 @@ class VendedorController extends Controller
             "vendedor" => $vendedor,
             "documento" => $vendedor->linkTo(new VendedorDocumento, "vendedor_id", $id, "documento"),
             "telefone" => $vendedor->linkTo(new VendedorTelefone, "vendedor_id", $id, "telefone"),
-            "endereco" => $vendedor->linkTo(new VendedorEndereco, "vendedor_id", $id, "endereco")
+            "endereco" => $vendedor->linkTo(new VendedorEndereco, "vendedor_id", $id, "endereco"),
         ]);
     }
 
-    public function store(CriarVendedorRequest $request)
+    public function store(CriarVendedorRequest $request): JsonResponse
     {
 
         $dados = $request->validated();
@@ -58,19 +58,19 @@ class VendedorController extends Controller
                 "nome" => $dados['nome'],
                 "email" => $dados['email'],
                 "senha" => $dados['senha'],
-                "ativo" => 1
+                "ativo" => 1,
             ]);
             /** CRIANDO VENDEDOR */
 
             /** CRIANDO DUCUMENTO */
             $documento = Documento::create([
                 "tipo" => $dados['tipo_documento'],
-                "numero" => $dados['numero_documento']
+                "numero" => $dados['numero_documento'],
             ]);
 
             $vincular_documento = VendedorDocumento::create([
                 "vendedor_id" => $vendedor->id,
-                "documento_id" => $documento->id
+                "documento_id" => $documento->id,
             ]);
             /** CRIANDO DUCUMENTO */
 
@@ -79,12 +79,12 @@ class VendedorController extends Controller
                 "cep" => $dados['cep'],
                 "bairro" => $dados['bairro'],
                 "rua" => $dados['rua'],
-                "numero" => $dados['numero_endereco']
+                "numero" => $dados['numero_endereco'],
             ]);
 
             $vincular_endereco = VendedorEndereco::create([
                 "vendedor_id" => $vendedor->id,
-                "endereco_id" => $endereco->id
+                "endereco_id" => $endereco->id,
             ]);
             /** CRIANDO ENDERECO */
 
@@ -97,7 +97,7 @@ class VendedorController extends Controller
             ]);
             $vincular_telefone = VendedorTelefone::create([
                 "vendedor_id" => $vendedor->id,
-                "telefone_id" => $telefone->id
+                "telefone_id" => $telefone->id,
             ]);
             /** CRIANDO TELEFONE */
 
