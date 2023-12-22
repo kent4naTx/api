@@ -30,7 +30,7 @@ class VendedorController extends Controller
         $vendedores_fulldata = array();
         foreach ($vendedores as $vendedor) {
             array_push($vendedores_fulldata, [
-                "vendedor" => $vendedor,
+                "profile" => $vendedor,
                 "documento" => $vendedor->linkTo(new VendedorDocumento, "vendedor_id", $vendedor->id, "documento"),
                 "telefone" => $vendedor->linkTo(new VendedorTelefone, "vendedor_id", $vendedor->id, "telefone"),
                 "endereco" => $vendedor->linkTo(new VendedorEndereco, "vendedor_id", $vendedor->id, "endereco"),
