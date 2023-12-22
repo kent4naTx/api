@@ -3,8 +3,8 @@
 namespace App\Http\Controllers\Usuario;
 
 use App\Http\Controllers\Controller;
-use App\Http\Requests\Usuario\CriarUsuarioRequest;
 use App\Http\Requests\Usuario\AtualizarUsuarioRequest;
+use App\Http\Requests\Usuario\CriarUsuarioRequest;
 use App\Models\Documento\Documento;
 use App\Models\Endereco\Endereco;
 use App\Models\Telefone\Telefone;
@@ -12,7 +12,6 @@ use App\Models\Usuario\Usuario;
 use App\Models\Usuario\UsuarioDocumento;
 use App\Models\Usuario\UsuarioEndereco;
 use App\Models\Usuario\UsuarioTelefone;
-use App\Models\Vendedor\VendedorTelefone;
 use Exception;
 use Helpers\Senhas;
 use Illuminate\Http\JsonResponse;
@@ -42,7 +41,7 @@ class UsuarioController extends Controller
             "usuario" => $usuario,
             "documento" => $usuario->linkTo(new UsuarioDocumento, "usuario_id", $id, 'documento'),
             "telefone" => $usuario->linkTo(new UsuarioTelefone, "usuario_id", $id, 'telefone'),
-            "endereco" => $usuario->linkTo(new UsuarioEndereco, "usuario_id", $id, 'endereco')
+            "endereco" => $usuario->linkTo(new UsuarioEndereco, "usuario_id", $id, 'endereco'),
         ]);
     }
 
@@ -59,18 +58,18 @@ class UsuarioController extends Controller
             $usuario = Usuario::create([
                 "nome" => $dados['nome'],
                 "email" => $dados['email'],
-                "senha" => $dados['senha']
+                "senha" => $dados['senha'],
             ]);
             /** CRIANDO USUARIO */
 
             /** CRIANDO DUCUMENTO */
             $documento = Documento::create([
                 "tipo" => $dados['tipo_documento'],
-                "numero" => $dados['numero_documento']
+                "numero" => $dados['numero_documento'],
             ]);
             $vincular_documento = UsuarioDocumento::create([
                 "usuario_id" => $usuario->id,
-                "documento_id" => $documento->id
+                "documento_id" => $documento->id,
             ]);
             /** CRIANDO DUCUMENTO */
 
@@ -79,15 +78,14 @@ class UsuarioController extends Controller
                 "cep" => $dados['cep'],
                 "bairro" => $dados['bairro'],
                 "rua" => $dados['rua'],
-                "numero" => $dados['numero_endereco']
-
+                "numero" => $dados['numero_endereco'],
+                "cidade_id" => $dados['cidade'],
             ]);
             $vincular_endereco = UsuarioEndereco::create([
                 "usuario_id" => $usuario->id,
-                "endereco_id" => $endereco->id
+                "endereco_id" => $endereco->id,
             ]);
             /** CRIANDO ENDERECO */
-
 
             /** CRIANDO TELEFONE */
             $telefone = Telefone::create([
@@ -98,7 +96,7 @@ class UsuarioController extends Controller
             ]);
             $vincular_telefone = UsuarioTelefone::create([
                 "usuario_id" => $usuario->id,
-                "telefone_id" => $telefone->id
+                "telefone_id" => $telefone->id,
             ]);
             /** CRIANDO TELEFONE */
 

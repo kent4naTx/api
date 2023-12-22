@@ -17,6 +17,7 @@ return new class extends Migration
             $table->string('bairro', 80);
             $table->string('rua', 80);
             $table->string('numero', 6);
+            $table->foreignId('cidade_id')->references('id')->on('cidade');
             $table->timestamps();
         });
     }

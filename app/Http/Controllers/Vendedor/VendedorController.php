@@ -80,6 +80,7 @@ class VendedorController extends Controller
                 "bairro" => $dados['bairro'],
                 "rua" => $dados['rua'],
                 "numero" => $dados['numero_endereco'],
+                "cidade_id" => $dados['cidade']
             ]);
 
             $vincular_endereco = VendedorEndereco::create([
