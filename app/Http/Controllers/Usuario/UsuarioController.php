@@ -123,16 +123,15 @@ class UsuarioController extends Controller
 
         try {
             DB::beginTransaction();
-            // foreach ($request->validated() as $key => $value) {
-            //     if ($key == "senha") {
-            //         $usuario->$key = Senhas::criptografar($value);
-            //     } else {
-            //         $usuario->$key = $value;
-            //     }
-            // }
+            foreach ($request->validated() as $key => $value) {
+                if ($key == "senha") {
+                    $usuario->$key = Senhas::criptografar($value);
+                } else {
+                    $usuario->$key = $value;
+                }
+            }
 
-            // $usuario->save();
-            $usuario->update($request->validated());
+            $usuario->save();
             DB::commit();
         } catch (Exception $e) {
             DB::rollback();
