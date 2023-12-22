@@ -31,6 +31,7 @@ class CriarUsuarioRequest extends Request
             "cep" => "required|max:10",
             "bairro" => "required|max:80",
             "rua" => "required|max:80",
+            "cidade" => "required|exists:cidade,id",
             "numero_endereco" => "required|max:6",
             "numero_telefone" => "required|max:15",
             "tipo_telefone" => "required",
