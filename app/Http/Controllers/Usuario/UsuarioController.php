@@ -38,7 +38,7 @@ class UsuarioController extends Controller
         }
 
         return parent::apiResponse(200, true, "dataRetrieveSuccess", [
-            "usuario" => $usuario,
+            "profile" => $usuario,
             "documento" => $usuario->linkTo(new UsuarioDocumento, "usuario_id", $id, 'documento'),
             "telefone" => $usuario->linkTo(new UsuarioTelefone, "usuario_id", $id, 'telefone'),
             "endereco" => $usuario->linkTo(new UsuarioEndereco, "usuario_id", $id, 'endereco'),

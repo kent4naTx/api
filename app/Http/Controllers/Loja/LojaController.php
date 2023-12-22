@@ -48,7 +48,7 @@ class LojaController extends Controller
         }
 
         return parent::apiResponse(200, true, "dataRetrieveSuccess", [
-            "loja" => $loja,
+            "profile" => $loja,
             "documento" => $loja->linkTo(new LojaDocumento, 'loja_id', $id, 'documento'),
             "telefone" => $loja->linkTo(new LojaTelefone, 'loja_id', $id, 'telefone'),
             "endereco" => $loja->linkTo(new LojaEndereco, 'loja_id', $id, 'endereco'),

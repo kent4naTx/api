@@ -49,7 +49,7 @@ class VendedorController extends Controller
         }
 
         return parent::apiResponse(200, true, "dataRetrieveSuccess", [
-            "vendedor" => $vendedor,
+            "profile" => $vendedor,
             "telefone" => $vendedor->linkTo(new VendedorTelefone, "vendedor_id", $id, "telefone"),
             "endereco" => $vendedor->linkTo(new VendedorEndereco, "vendedor_id", $id, "endereco"),
             "documento" => $vendedor->linkTo(new VendedorDocumento, "vendedor_id", $id, "documento"),
