@@ -26,7 +26,18 @@ class VendedorController extends Controller
 
             return parent::apiResponse(201, false, "dataNotFound");
         }
-        return parent::apiResponse(200, true, "dataRetrieveSuccess", $vendedores);
+
+        $vendedores_fulldata = array();
+        foreach ($vendedores as $vendedor) {
+            array_push($vendedores_fulldata, [
+                "vendedor" => $vendedor,
+                "documento" => $vendedor->linkTo(new VendedorDocumento, "vendedor_id", $vendedor->id, "documento"),
+                "telefone" => $vendedor->linkTo(new VendedorTelefone, "vendedor_id", $vendedor->id, "telefone"),
+                "endereco" => $vendedor->linkTo(new VendedorEndereco, "vendedor_id", $vendedor->id, "endereco"),
+            ]);
+        }
+
+        return parent::apiResponse(200, true, "dataRetrieveSuccess", $vendedores_fulldata);
     }
 
     public function show(int $id): JsonResponse
@@ -39,9 +50,9 @@ class VendedorController extends Controller
 
         return parent::apiResponse(200, true, "dataRetrieveSuccess", [
             "vendedor" => $vendedor,
-            "documento" => $vendedor->linkTo(new VendedorDocumento, "vendedor_id", $id, "documento"),
             "telefone" => $vendedor->linkTo(new VendedorTelefone, "vendedor_id", $id, "telefone"),
             "endereco" => $vendedor->linkTo(new VendedorEndereco, "vendedor_id", $id, "endereco"),
+            "documento" => $vendedor->linkTo(new VendedorDocumento, "vendedor_id", $id, "documento"),
         ]);
     }
 
@@ -80,7 +91,7 @@ class VendedorController extends Controller
                 "bairro" => $dados['bairro'],
                 "rua" => $dados['rua'],
                 "numero" => $dados['numero_endereco'],
-                "cidade_id" => $dados['cidade']
+                "cidade_id" => $dados['cidade'],
             ]);
 
             $vincular_endereco = VendedorEndereco::create([

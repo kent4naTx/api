@@ -37,7 +37,7 @@ class RotaController extends Controller
             "rota" => $rota,
             "cidades" => $rota->linkTo(new RotaCidade, 'rota_id', $id, "cidade"),
             "status" => $rota->linkTo(new RotaStatus, 'rota_id', $id, "sattus"),
-            "vendedor" => $rota->linkTo(new RotaVendedor, 'rota_id', $id, "vendedor")
+            "vendedor" => $rota->linkTo(new RotaVendedor, 'rota_id', $id, "vendedor"),
         ]);
     }
 
