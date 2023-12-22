@@ -6,6 +6,9 @@ use App\Http\Controllers\Controller;
 use App\Http\Requests\Loja\AtualizarLojaRequest;
 use App\Http\Requests\Loja\CriarLojaRequest;
 use App\Models\Loja\Loja;
+use App\Models\Loja\LojaDocumento;
+use App\Models\Loja\LojaEndereco;
+use App\Models\Loja\LojaTelefone;
 use Exception;
 use Helpers\Senhas;
 use Illuminate\Http\JsonResponse;
@@ -41,7 +44,12 @@ class LojaController extends Controller
             return parent::apiResponse(201, false, "dataRetrieve");
         }
 
-        return parent::apiResponse(200, true, "dataRetrieveSuccess", $loja);
+        return parent::apiResponse(200, true, "dataRetrieveSuccess", [
+            "loja" => $loja,
+            "documento" => $loja->linkTo(new LojaDocumento, 'loja_id', $id, 'documento'),
+            "telefone" => $loja->linkTo(new LojaTelefone, 'loja_id', $id, 'telefone'),
+            "endereco" => $loja->linkTo(new LojaEndereco, 'loja_id', $id, 'endereco')
+        ]);
     }
 
     public function store(CriarLojaRequest $request): JsonResponse

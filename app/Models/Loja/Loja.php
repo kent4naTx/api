@@ -2,10 +2,10 @@
 
 namespace App\Models\Loja;
 
+use App\Models\LinkedModel;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
-use Illuminate\Database\Eloquent\Model;
 
-class Loja extends Model
+class Loja extends LinkedModel
 {
     use HasFactory;
     protected $table = "loja";
