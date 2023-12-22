@@ -10,7 +10,7 @@ class LinkedModel extends Model
     use HasFactory;
 
     /** FUNÇÂO ADICIONADA */
-    public function linkTo(Model $model, $key ,$id, $callback)
+    public function linkTo(Model $model, $key, $id, $callback)
     {
         $response = array();
         $items = $model::where($key, $id)->get();

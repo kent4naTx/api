@@ -11,6 +11,8 @@ use App\Models\Telefone\Telefone;
 use App\Models\Usuario\Usuario;
 use App\Models\Usuario\UsuarioDocumento;
 use App\Models\Usuario\UsuarioEndereco;
+use App\Models\Usuario\UsuarioTelefone;
+use App\Models\Vendedor\VendedorTelefone;
 use Exception;
 use Helpers\Senhas;
 use Illuminate\Http\JsonResponse;
@@ -36,7 +38,12 @@ class UsuarioController extends Controller
             return parent::apiResponse(201, false, "dataNotFound");
         }
 
-        return parent::apiResponse(200, true, "dataRetrieveSuccess", $usuario);
+        return parent::apiResponse(200, true, "dataRetrieveSuccess", [
+            "usuario" => $usuario,
+            "documento" => $usuario->linkTo(new UsuarioDocumento, "usuario_id", $id, 'documento'),
+            "telefone" => $usuario->linkTo(new UsuarioTelefone, "usuario_id", $id, 'telefone'),
+            "endereco" => $usuario->linkTo(new UsuarioEndereco, "usuario_id", $id, 'endereco')
+        ]);
     }
 
     public function store(CriarUsuarioRequest $request): JsonResponse
@@ -50,9 +57,9 @@ class UsuarioController extends Controller
 
             /** CRIANDO USUARIO */
             $usuario = Usuario::create([
-                "nome" => $dados->nome,
-                "email" => $dados->email,
-                "senha" => $dados->senha
+                "nome" => $dados['nome'],
+                "email" => $dados['email'],
+                "senha" => $dados['senha']
             ]);
             /** CRIANDO USUARIO */
 
@@ -69,10 +76,10 @@ class UsuarioController extends Controller
 
             /** CRIANDO ENDERECO */
             $endereco = Endereco::create([
-                "cep" => $dados->cep,
-                "bairro" => $dados->bairro,
-                "rua" => $dados->rua,
-                "numero" => $dados->numero_documento
+                "cep" => $dados['cep'],
+                "bairro" => $dados['bairro'],
+                "rua" => $dados['rua'],
+                "numero" => $dados['numero_endereco']
 
             ]);
             $vincular_endereco = UsuarioEndereco::create([
@@ -84,12 +91,12 @@ class UsuarioController extends Controller
 
             /** CRIANDO TELEFONE */
             $telefone = Telefone::create([
-                "numero" => $dados->numero_telefone,
-                "tipo" => $dados->tipo_telefone,
-                "principal" => $dados->principal,
+                "numero" => $dados['numero_telefone'],
+                "tipo" => $dados['tipo_telefone'],
+                "principal" => $dados['principal'],
 
             ]);
-            $vincular_telefone = UsuarioEndereco::create([
+            $vincular_telefone = UsuarioTelefone::create([
                 "usuario_id" => $usuario->id,
                 "telefone_id" => $telefone->id
             ]);
@@ -116,14 +123,16 @@ class UsuarioController extends Controller
 
         try {
             DB::beginTransaction();
-            foreach ($request->validated() as $key => $value) {
-                if ($key == "senha") {
-                    $usuario->$key = Senhas::criptografar($value);
-                } else {
-                    $usuario->$key = $value;
-                }
-            }
-            $usuario->save();
+            // foreach ($request->validated() as $key => $value) {
+            //     if ($key == "senha") {
+            //         $usuario->$key = Senhas::criptografar($value);
+            //     } else {
+            //         $usuario->$key = $value;
+            //     }
+            // }
+
+            // $usuario->save();
+            $usuario->update($request->validated());
             DB::commit();
         } catch (Exception $e) {
             DB::rollback();
